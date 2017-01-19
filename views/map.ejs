@@ -18,7 +18,7 @@
 
     var icons = {
       g: new AMap.Icon({ image: '/images/car-green-new.png', imageSize: new AMap.Size(24,24) }),
-      o: new AMap.Icon({ image: '/images/car-orange.png', imageSize: new AMap.Size(36,36) }),
+      o: new AMap.Icon({ image: '/images/car-orange-new.png', imageSize: new AMap.Size(36,36) }),
       b: new AMap.Icon({ image: '/images/car-blue.png', imageSize: new AMap.Size(24,24) }),
     };
 
@@ -58,7 +58,7 @@
                 position: [elem.pos.lng, elem.pos.lag],
                 title: elem.vid,
                 draggable: true,
-                icon: icons.g,
+                icon: icons.o,
                 map: map
               }),
               info:elem
