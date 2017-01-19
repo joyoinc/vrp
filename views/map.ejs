@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  
+  <style>
+    body, html{ width: 100%; height: 100%; }
+    #canvas { width: 100%; height: 100%; }
+  </style>
+
+   <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+  
+  <script src="http://webapi.amap.com/maps?v=1.3&key=edfdd288a99d40efce8aeab0e65807ed&callback=init"></script>
+
+  <script>
+    var map;
+    var vehicles = [];
+
+    var icons = {
+      g: new AMap.Icon({ image: '/images/car-green-new.png', imageSize: new AMap.Size(24,24) }),
+      o: new AMap.Icon({ image: '/images/car-orange.png', imageSize: new AMap.Size(36,36) }),
+      b: new AMap.Icon({ image: '/images/car-blue.png', imageSize: new AMap.Size(24,24) }),
+    };
+
+    function init() {
+        map = new AMap.Map('canvas', {
+            center: [114.085947,22.547], // sheng zhen
+            zoom: 13
+        });
+        map.plugin(["AMap.ToolBar"], function(){
+            map.addControl(new AMap.ToolBar());
+        });
+
+        var marker_depot = new AMap.Marker({
+            position: [114.084340, 22.546080],
+            title: 'Depot',
+            map: map
+        });
+    }
+
+    function repaintVehicle() {
+      vehicles.forEach(function(elem){
+        if(elem.marker) {
+          elem.marker.setPosition([elem.info.pos.lng, elem.info.pos.lag]);
+        }
+      });
+    }
+
+    function fetchVehicle() {
+      $.ajax({
+        url: "/vehicle",
+        dataType: "json",
+      }).done(function(data){
+        if(vehicles.length!=data.length) {
+          data.forEach(function(elem){
+            vehicles.push({
+              marker: new AMap.Marker({
+                position: [elem.pos.lng, elem.pos.lag],
+                title: elem.vid,
+                draggable: true,
+                icon: icons.g,
+                map: map
+              }),
+              info:elem
+            });
+          });
+        } else {
+          for(var i=0; i<data.length; i++) {
+            vehicles[i].info = data[i];
+          }
+        }
+        //console.log(data);
+      }).fail(function(xhr, status, error) {
+        console.log('fail');
+      });
+    }
+
+    function setAllTimers() {
+      setInterval(fetchVehicle, 5000);
+
+      setInterval(repaintVehicle, 3000);
+    }
+
+    $(document).ready(function(){
+      setAllTimers();
+    });
+
+  </script>
+
+  </head>
+  
+  <body>
+  
+    <div id='canvas'></div>
+
+  </body>
+</html>
+
