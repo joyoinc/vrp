@@ -34,6 +34,10 @@ module.exports.routes = {
 
   '/map' : { view: 'map' },
 
+  'POST /freight/pickup' : 'FreightController.pickup',
+
+  '/freight/unassigned' : 'FreightController.unassigned',
+
   '/': {
     view: 'homepage'
   }
