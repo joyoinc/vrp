@@ -30,6 +30,37 @@ module.exports = {
       }
       return res.json(d);
     });
+  },
+
+  all: function(req, res) {
+    Freight.find({},{select:['id']}).exec(function(err, d){
+      if(err) {
+        console.log(err);
+        return;
+      }
+      return res.json(d);
+    });
+  },
+
+  recent: function(req, res) {
+    var totalSecs = req.param('totalSecs');
+    var count = req.param('count');
+    var ts = new Date(Date.now() - totalSecs * 1000);
+    Freight.find({createdAt: {"$gte": ts}}).exec(function(err, d){
+      if(err) {
+        console.log(err);
+        return;
+      }
+
+
+      var bins = [];
+      for(var i=0; i<count; i++) bins.push(0);
+      d.forEach(function(elem){
+        h_diff = parseInt((Date.now() - elem.createdAt) / 1000 / (totalSecs / count));
+          bins[h_diff] += 1;
+      });
+      return res.json(bins);
+    });
   }
 };
 

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<style>
+
+.bar {
+  fill: steelblue;
+}
+
+.axis text {
+  font: 10px sans-serif;
+}
+
+.bar-text {
+  text-anchor: middle;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  display: none;
+}
+
+</style>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+<script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script>
+function drawChart(data) {
+
+var margin = {top: 20, right: 30, bottom: 30, left: 40},
+    width = 1920 - margin.left - margin.right,
+    height = 800 - margin.top - margin.bottom;
+
+var x = d3.scale.ordinal()
+    .rangeRoundBands([0, width], .1);
+
+var y = d3.scale.linear()
+    .range([height, 0]);
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom");
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left");
+
+var chart = d3.select(".chart")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  names = [];
+  for(var i=0; i<data.length; i++) names.push("last "+ (i+1) + "h");
+  y.domain([0, d3.max(data, function(d) { return d; })]);
+  x.domain(names);
+
+  chart.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis);
+
+  chart.append("g")
+      .attr("class", "y axis")
+      .call(yAxis);
+
+  var bar = chart.selectAll(".bar")
+      .data(data)
+    .enter().append("g");
+
+  bar.append("rect")
+      .attr("class", "bar")
+      .attr("x", function(d,i) { return x(names[i]); })
+      .attr("y", function(d) { return y(d); })
+      .attr("height", function(d) { return height - y(d); })
+      .attr("width", x.rangeBand());
+
+  bar.append("text")
+      .attr("class", "bar-text")
+      .attr("x", function(d,i) { return x(names[i]) + x.rangeBand()/2; })
+      .attr("y", function(d) { return y(d) - 3; })
+    .text(function(d){return d});
+
+}
+
+function loadRecentByHourly() {
+      $.ajax({
+        url: "/freight/recent/86400/24",
+        dataType: "json",
+      }).done(function(data){
+        //console.log(data);
+        drawChart(data);
+      }).fail(function(xhr, status, error) {
+        console.log('fail');
+      });
+
+}
+
+$(document).ready(function(){
+  loadRecentByHourly();
+});
+</script>
+<body>
+  <h1> New Freights in last 24 hr </h1>
+  <svg class="chart"></svg>
+</body>
+</html>
