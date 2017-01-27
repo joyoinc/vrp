@@ -52,12 +52,15 @@ module.exports = {
         return;
       }
 
-
       var bins = [];
-      for(var i=0; i<count; i++) bins.push(0);
+      for(var i=0; i<count; i++) bins.push({priority:[]});
       d.forEach(function(elem){
         h_diff = parseInt((Date.now() - elem.createdAt) / 1000 / (totalSecs / count));
-          bins[h_diff] += 1;
+        var bin = bins[h_diff];
+        if(bin.priority[elem.urgency])
+          bin.priority[elem.urgency] ++;
+        else
+          bin.priority[elem.urgency] = 1;
       });
       return res.json(bins);
     });

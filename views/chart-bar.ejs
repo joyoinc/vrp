@@ -95,7 +95,13 @@ function loadRecentByHourly() {
         dataType: "json",
       }).done(function(data){
         //console.log(data);
-        drawChart(data);
+        var d = data.map(function(e){
+          var sum = e.priority.reduce(function(acc, cur){
+            return acc + parseInt(cur) || 0;
+          }, 0);
+          return sum;
+        });
+        drawChart(d);
       }).fail(function(xhr, status, error) {
         console.log('fail');
       });
@@ -107,7 +113,7 @@ $(document).ready(function(){
 });
 </script>
 <body>
-  <h1> New Freights in last 24 hr </h1>
+  <h1> New Freights in last 24 hr, per hour</h1>
   <svg class="chart"></svg>
 </body>
 </html>
