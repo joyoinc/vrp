@@ -89,6 +89,7 @@
 
     <!--SCRIPTS-->
     <script src="/js/dependencies/sails.io.js"></script>
+    <script src="/js/bootstrap/bootstrap.js"></script>
     <!--SCRIPTS END-->
 
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -115,6 +116,7 @@
             </div>
             <button  class="btn btn-success">Add</button>
             <button  class="btn btn-primary">Run</button>
+            <label class='btn btn-default '> Import A File...<input type="file" id="inputFile" style='display:none'> </label>
           </form>
         </div>
       </div>
@@ -131,6 +133,8 @@
         <tbody>
         </tbody>
       </table>
+
+      <pre id="fileDisplay"></pre>
 
       <hr>
 
@@ -155,10 +159,13 @@ $('.btn-success').click(function(evt){
     return;
   }
 
-  var newChild = `<tr onclick=onRemoveTR(this)><td>${$('.table-condensed tr').length}</td><td>${$('.num-data-in:eq(0)').val()}</td><td>${$('.num-data-in:eq(1)').val()}</td><td>${$('.num-data-in:eq(2)').val()}</td></tr>`;
-  $('.table-condensed').append(newChild);
-
+  addALocation($('.num-data-in:eq(0)').val(),$('.num-data-in:eq(1)').val(),$('.num-data-in:eq(2)').val());
 });
+
+var addALocation = function(lng, lag, vol) {
+  var newChild = `<tr onclick=onRemoveTR(this)><td>${$('.table-condensed tr').length}</td><td>${lng}</td><td>${lag}</td><td>${vol}</td></tr>`;
+  $('.table-condensed').append(newChild);
+}
 
 var onRemoveTR = function(obj) { $(obj).remove(); }
 
@@ -192,4 +199,27 @@ $('.btn-primary').click(function(evt) {
     contentType: 'application/json'
     }).done(function(){alert('job submission success');location.reload();}).fail(function(){alert('job submission fail')});
 });
+
+$('#inputFile').on('change',function(e){
+  var file = this.files[0];
+  var fileType = /text.*/;
+  if (file.type.match(fileType)) {
+    var reader = new FileReader();
+    reader.onload = function() { $('#fileDisplay').text(reader.result); tryParseProblem(reader.result); }
+    reader.readAsText(file);
+  } else {
+    $('#fileDisplay').text('File not support')
+  }
+});
+
+tryParseProblem = function(content) {
+  var lines = content.split('\n');
+  var demands = JSON.parse(lines[1]);
+  var locs = JSON.parse(lines[0]);
+  if(demands.length != locs.length) return false;
+  for(var i=0; i<demands.length; i++) {
+    addALocation(locs[i][0], locs[i][1], demands[i]);
+  }
+  return true;
+}
 </script>
