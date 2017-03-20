@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+    <title><%=typeof title == 'undefined' ? 'New Sails App' : title%></title>
+
+    <!-- Viewport mobile tag for sensible mobile support -->
+    <!--
+        Stylesheets and Preprocessors
+        ==============================
+
+        You can always bring in CSS files manually with `<link>` tags, or asynchronously
+        using a solution like AMD (RequireJS).  Or, if you like, you can take advantage
+        of Sails' conventional asset pipeline (boilerplate Gruntfile).
+
+        By default, stylesheets from your `assets/styles` folder are included
+        here automatically (between STYLES and STYLES END). Both CSS (.css) and LESS (.less)
+        are supported. In production, your styles will be minified and concatenated into
+        a single file.
+
+        To customize any part of the built-in behavior, just edit `tasks/pipeline.js`.
+        For example, here are a few things you could do:
+
+            + Change the order of your CSS files
+            + Import stylesheets from other directories
+            + Use a different or additional preprocessor, like SASS, SCSS or Stylus
+    -->
+
+    <!--STYLES-->
+    <link rel="stylesheet" href="/styles/bootstrap/bootstrap-theme.css">
+    <link rel="stylesheet" href="/styles/bootstrap/bootstrap.css">
+    <link rel="stylesheet" href="/styles/importer.css">
+    <!--STYLES END-->
+  </head>
+
+  <body style="padding-top:70px">
+    <!--
+        Client-side Templates
+        ========================
+
+        HTML templates are important prerequisites of modern, rich client applications.
+        To work their magic, frameworks like Backbone, Angular, Ember, and Knockout require
+        that you load these templates client-side.
+
+        By default, your Gruntfile is configured to automatically load and precompile
+        client-side JST templates in your `assets/templates` folder, then
+        include them here automatically (between TEMPLATES and TEMPLATES END).
+
+        To customize this behavior to fit your needs, just edit `tasks/pipeline.js`.
+        For example, here are a few things you could do:
+
+            + Import templates from other directories
+            + Use a different template engine (handlebars, jade, dust, etc.)
+            + Internationalize your client-side templates using a server-side
+              stringfile before they're served.
+    -->
+
+    <!--TEMPLATES-->
+    
+    <!--TEMPLATES END-->
+
+
+    <!--
+
+      Client-side Javascript
+      ========================
+
+      You can always bring in JS files manually with `script` tags, or asynchronously
+      on the client using a solution like AMD (RequireJS).  Or, if you like, you can
+      take advantage of Sails' conventional asset pipeline (boilerplate Gruntfile).
+
+      By default, files in your `assets/js` folder are included here
+      automatically (between SCRIPTS and SCRIPTS END).  Both JavaScript (.js) and
+      CoffeeScript (.coffee) are supported. In production, your scripts will be minified
+      and concatenated into a single file.
+
+      To customize any part of the built-in behavior, just edit `tasks/pipeline.js`.
+      For example, here are a few things you could do:
+
+          + Change the order of your scripts
+          + Import scripts from other directories
+          + Use a different preprocessor, like TypeScript
+
+    -->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+
+    <!--SCRIPTS-->
+    <script src="/js/dependencies/sails.io.js"></script>
+    <!--SCRIPTS END-->
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Start to run a new VRP Problem</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <form class="navbar-form navbar-right">
+            <div class="form-group">
+              <input type="text" placeholder="Longitude" class="form-control num-data-in">
+            </div>
+            <div class="form-group">
+              <input type="text" placeholder="Lagtitude" class="form-control num-data-in">
+            </div>
+            <div class="form-group">
+              <input type="text" placeholder="Volumn" class="form-control num-data-in">
+            </div>
+            <button  class="btn btn-success">Add</button>
+            <button  class="btn btn-primary">Run</button>
+          </form>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <table class="table table-condensed">
+        <thead>
+          <th>#</th>
+          <th>Lng</th>
+          <th>Lag</th>
+          <th>Vol</th>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+
+      <hr>
+
+      <footer>
+        <p>&copy; 2016 Comp, Inc.</p>
+      </footer>
+    </div>
+
+  </body>
+</html>
+
+<script>
+$('.btn-success').click(function(evt){
+  evt.preventDefault();
+  var invalid = $('.num-data-in').map(function(idx,elem){
+    var v = $(elem).val();
+    return $.isNumeric(v) ? null : elem;
+  });
+
+  if(invalid.length > 0) {
+    alert('Some numeric field is invalid ! Please fix it first');
+    return;
+  }
+
+  var newChild = `<tr onclick=onRemoveTR(this)><td>${$('.table-condensed tr').length}</td><td>${$('.num-data-in:eq(0)').val()}</td><td>${$('.num-data-in:eq(1)').val()}</td><td>${$('.num-data-in:eq(2)').val()}</td></tr>`;
+  $('.table-condensed').append(newChild);
+
+});
+
+var onRemoveTR = function(obj) { $(obj).remove(); }
+
+$('.btn-primary').click(function(evt) {
+  evt.preventDefault();
+
+  if($('tbody tr').length <= 0) {
+    alert('No input to run!');
+    return;
+  }
+
+  var depot = null;
+  var demands = [];
+  $('tbody tr').each(function(idx,elem){
+    var d = {
+      lng: $(':eq(1)', elem).text() ,
+      lag: $(':eq(2)', elem).text() ,
+      vol: $(':eq(3)', elem).text() ,
+    }
+    if(d.vol==0) depot = d;
+    demands.push(d);
+  });
+  if(depot==null) depot = demands[0];
+  depot.vol = 0;
+
+  $.ajax({
+    type: 'POST',
+    url: '/prob',
+    data: JSON.stringify({depot: depot, demands: demands}),
+    dataType: 'json',
+    contentType: 'application/json'
+    }).done(function(){alert('job submission success');location.reload();}).fail(function(){alert('job submission fail')});
+});
+</script>

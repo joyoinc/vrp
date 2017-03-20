@@ -33,6 +33,7 @@ module.exports.routes = {
   ***************************************************************************/
 
   '/map' : { view: 'map' },
+  '/app' : { view: 'appPortal' },
 
   '/chart/bar' : { view: 'chart-bar' },
   '/chart/pie' : { view: 'chart-pie' },
