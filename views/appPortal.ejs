@@ -101,28 +101,40 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Start to run a new VRP Problem</a>
+          <a class="navbar-brand" href="#">Start to run a new VRP</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <form class="navbar-form navbar-right">
             <div class="form-group">
               <input type="text" placeholder="Longitude" class="form-control num-data-in">
-            </div>
-            <div class="form-group">
               <input type="text" placeholder="Lagtitude" class="form-control num-data-in">
-            </div>
-            <div class="form-group">
               <input type="text" placeholder="Volumn" class="form-control num-data-in">
             </div>
+            <div class="form-group">
             <button  class="btn btn-success">Add</button>
             <button  class="btn btn-primary">Run</button>
             <label class='btn btn-default '> Import A File...<input type="file" id="inputFile" style='display:none'> </label>
+            </div>
           </form>
         </div>
       </div>
     </nav>
 
     <div class="container">
+      <div class="form-horizontal">
+        <div class="form-group">
+          <label for="numV" class="col-sm-2 control-label">Number Of Vehicle</label>
+          <div class="col-sm-10">
+            <input type="text" id="numV" value="10" class="form-control num-data-in">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="volperV" class="col-sm-2 control-label">Volume per Vehicle</label>
+          <div class="col-sm-10">
+            <input type="text" id="volperV" value="100" class="form-control num-data-in">
+          </div>
+        </div>
+        </div>
       <table class="table table-condensed">
         <thead>
           <th>#</th>
@@ -194,7 +206,7 @@ $('.btn-primary').click(function(evt) {
   $.ajax({
     type: 'POST',
     url: '/prob',
-    data: JSON.stringify({depot: depot, demands: demands}),
+    data: JSON.stringify({depot: depot, demands: demands, numV: $('#numV').val(), volperV: $('#volperV').val()}),
     dataType: 'json',
     contentType: 'application/json'
     }).done(function(){alert('job submission success');location.reload();}).fail(function(){alert('job submission fail')});

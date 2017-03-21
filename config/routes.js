@@ -44,6 +44,8 @@ module.exports.routes = {
   '/freight/recent/:totalSecs/:count' : 'FreightController.recent',
   '/freight/all' : 'FreightController.all',
 
+  '/prob/pick' : 'ProbController.pickone',
+
   '/': {
     view: 'homepage'
   }

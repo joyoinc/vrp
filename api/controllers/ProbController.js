@@ -6,6 +6,14 @@
  */
 
 module.exports = {
-	
+  pickone: function(req,res) {
+    Prob.find().limit(1).exec(function(err, d){
+      if(err) {
+        console.log(err);
+        return;
+      }
+      return res.json(d);
+    });
+  }
 };
 
