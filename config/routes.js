@@ -33,7 +33,8 @@ module.exports.routes = {
   ***************************************************************************/
 
   '/map' : { view: 'map' },
-  '/app' : { view: 'appPortal' },
+  '/appBeta' : { view: 'appPortal' },
+  '/app' : { view: 'appV2' },
 
   '/chart/bar' : { view: 'chart-bar' },
   '/chart/pie' : { view: 'chart-pie' },

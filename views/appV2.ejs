@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+    <title><%=typeof title == 'undefined' ? 'New Sails App' : title%></title>
+
+    <!-- Viewport mobile tag for sensible mobile support -->
+    <!--
+        Stylesheets and Preprocessors
+        ==============================
+
+        You can always bring in CSS files manually with `<link>` tags, or asynchronously
+        using a solution like AMD (RequireJS).  Or, if you like, you can take advantage
+        of Sails' conventional asset pipeline (boilerplate Gruntfile).
+
+        By default, stylesheets from your `assets/styles` folder are included
+        here automatically (between STYLES and STYLES END). Both CSS (.css) and LESS (.less)
+        are supported. In production, your styles will be minified and concatenated into
+        a single file.
+
+        To customize any part of the built-in behavior, just edit `tasks/pipeline.js`.
+        For example, here are a few things you could do:
+
+            + Change the order of your CSS files
+            + Import stylesheets from other directories
+            + Use a different or additional preprocessor, like SASS, SCSS or Stylus
+    -->
+    <style>
+      #ex1Slider { width: 100%; }
+
+      #ex1Slider .slider-selection {
+        background: #ccc;
+      }
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/css/bootstrap-slider.min.css">
+    <!--STYLES-->
+    <link rel="stylesheet" href="/styles/bootstrap/bootstrap-theme.css">
+    <link rel="stylesheet" href="/styles/bootstrap/bootstrap.css">
+    <link rel="stylesheet" href="/styles/importer.css">
+    <!--STYLES END-->
+  </head>
+
+  <body style="padding-top:70px">
+    <!--
+        Client-side Templates
+        ========================
+
+        HTML templates are important prerequisites of modern, rich client applications.
+        To work their magic, frameworks like Backbone, Angular, Ember, and Knockout require
+        that you load these templates client-side.
+
+        By default, your Gruntfile is configured to automatically load and precompile
+        client-side JST templates in your `assets/templates` folder, then
+        include them here automatically (between TEMPLATES and TEMPLATES END).
+
+        To customize this behavior to fit your needs, just edit `tasks/pipeline.js`.
+        For example, here are a few things you could do:
+
+            + Import templates from other directories
+            + Use a different template engine (handlebars, jade, dust, etc.)
+            + Internationalize your client-side templates using a server-side
+              stringfile before they're served.
+    -->
+
+    <!--TEMPLATES-->
+    
+    <!--TEMPLATES END-->
+
+
+    <!--
+
+      Client-side Javascript
+      ========================
+
+      You can always bring in JS files manually with `script` tags, or asynchronously
+      on the client using a solution like AMD (RequireJS).  Or, if you like, you can
+      take advantage of Sails' conventional asset pipeline (boilerplate Gruntfile).
+
+      By default, files in your `assets/js` folder are included here
+      automatically (between SCRIPTS and SCRIPTS END).  Both JavaScript (.js) and
+      CoffeeScript (.coffee) are supported. In production, your scripts will be minified
+      and concatenated into a single file.
+
+      To customize any part of the built-in behavior, just edit `tasks/pipeline.js`.
+      For example, here are a few things you could do:
+
+          + Change the order of your scripts
+          + Import scripts from other directories
+          + Use a different preprocessor, like TypeScript
+
+    -->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/bootstrap-slider.min.js" ></script>
+
+    <!--SCRIPTS-->
+    <script src="/js/dependencies/sails.io.js"></script>
+    <script src="/js/bootstrap/bootstrap.js"></script>
+    <!--SCRIPTS END-->
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Start to run a new VRP</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <form class="navbar-form navbar-right">
+            <div class="form-group">
+            <button  class="btn btn-success">Generate Grids</button>
+            <button  class="btn btn-primary">Run</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="form-horizontal">
+        <div class="form-group">
+          <label for="numV" class="col-sm-2 control-label">车辆总数</label>
+          <div class="col-sm-4">
+            <input type="text" id="numV" value="10" class="form-control num-data-in">
+          </div>
+          <label for="volperV" class="col-sm-2 control-label">每辆车容积</label>
+          <div class="col-sm-4">
+            <input type="text" id="volperV" value="100" class="form-control num-data-in">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label">仓库位置</label>
+          <div class="col-sm-2">
+            <input type="text" id="depotLng" value="114.00" class="form-control num-data-in">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" id="depotLag" value="22.00" class="form-control num-data-in">
+          </div>
+          <label class="col-sm-2 control-label">取货点起始位置</label>
+          <div class="col-sm-2">
+            <input type="text" id="gridLng" value="114.22" class="form-control num-data-in">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" id="gridLag" value="22.93" class="form-control num-data-in">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label">取货点总数</label>
+          <div class="col-sm-1">
+            <input type="text" id="gridNum" value="20" class="form-control num-data-in">
+          </div>
+          <label class="col-sm-2 control-label">间距（单位：百米）</label>
+          <div class="col-sm-1">
+            <input type="text" id="gridDistance" value="1" class="form-control num-data-in">
+          </div>
+          <label class="col-sm-2 control-label">货物总量</label>
+          <div class="col-sm-1">
+            <input type="text" id="ttlVol" value="10000" class="form-control num-data-in">
+          </div>
+          <label class="col-sm-1 control-label">偏差</label>
+          <div class="col-sm-2">
+            <input id="volOffset" data-slider-id='ex1Slider' type="text" data-slider-min="1" data-slider-max="20" data-slider-step="1" data-slider-value="10"/>
+          </div>
+        </div>
+      </div>
+      <table class="table table-condensed">
+        <thead>
+          <th>#</th>
+          <th>经度</th>
+          <th>纬度</th>
+          <th>货量</th>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+
+      <pre id="fileDisplay"></pre>
+
+      <% include footer.ejs %>
+
+  </body>
+</html>
+
+<script>
+$('#volOffset').slider({ formatter: function(value) { return 'Current value: ' + value; } });
+
+$('.btn-success').click(function(evt){
+  evt.preventDefault();
+  var invalid = $('.num-data-in').map(function(idx,elem){
+    var v = $(elem).val();
+    return $.isNumeric(v) ? null : elem;
+  });
+
+  if(invalid.length > 0) {
+    alert('Some numeric field is invalid ! Please fix it first');
+    return;
+  }
+  
+  $('.table-condensed tbody').empty();
+  
+  var grids = generateGrids();
+  
+  $.each(grids, function(idx, elem){
+    addALocation(elem.lng, elem.lag, elem.vol);
+  });
+});
+
+var generateGrids = function() {
+    var avgVol = $('#ttlVol').val() / $('#gridNum').val();
+    var offVol = $('#volOffset').val();
+    var total = $('#gridNum').val();
+    var lngOffset = $('#gridDistance').val() * 0.001;
+    var lagOffset = $('#gridDistance').val() * 0.002;
+    var startLng = $('#gridLng').val();
+    var startLag = $('#gridLag').val();
+    var sizeInLine = Math.ceil(Math.sqrt(total));
+    var currentLng = +startLng;
+    var currentLag = +startLag;
+    var result = [ {lng: currentLng.toFixed(6), lag: currentLag.toFixed(6), vol: (Math.random() * offVol * 2 + avgVol - offVol).toFixed(0)} ];
+    while(result.length < total) {
+        if( result.length % sizeInLine == 0) {
+            currentLng = +startLng;
+            currentLag += lagOffset;
+        } else {
+            currentLng += lngOffset;
+        }
+        result.push( {lng: currentLng.toFixed(6), lag: currentLag.toFixed(6), vol: (Math.random() * offVol * 2 + avgVol - offVol).toFixed(0)} );
+    }
+    return result;
+}
+
+var addALocation = function(lng, lag, vol) {
+  var newChild = `<tr onclick=onEditTR(this)><td>${$('.table-condensed tr').length}</td><td>${lng}</td><td>${lag}</td><td>${vol}</td></tr>`;
+  $('.table-condensed').append(newChild);
+}
+
+var onEditTR = function(obj) { 
+    if($("input", obj).length > 0) return;
+    
+    $(":gt(0)", obj).each(function(idx, elem){
+        var value = $(elem).text();
+        $(elem).empty().append(`<input type=text value=${value}>`);
+    })
+}
+
+$('.btn-primary').click(function(evt) {
+  evt.preventDefault();
+
+  if($('tbody tr').length <= 0) {
+    alert('No input to run!');
+    return;
+  }
+
+  var depot = { lng: $('#depotLng').val(), lag: $('#depotLag').val(), vol: 0 };
+  var demands = [depot];
+  $('tbody tr').each(function(idx,elem){
+    var d = {
+      lng: $(':eq(1)', elem).text() ,
+      lag: $(':eq(2)', elem).text() ,
+      vol: $(':eq(3)', elem).text() ,
+    }
+    demands.push(d);
+  });
+
+  $.ajax({
+    type: 'POST',
+    url: '/prob',
+    data: JSON.stringify({depot: depot, demands: demands, numV: $('#numV').val(), volperV: $('#volperV').val()}),
+    dataType: 'json',
+    contentType: 'application/json'
+    }).done(function(){alert('job submission success');location.reload();}).fail(function(){alert('job submission fail')});
+});
+
+</script>
