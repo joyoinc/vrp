@@ -92,135 +92,63 @@
     <script src="/js/bootstrap/bootstrap.js"></script>
     <!--SCRIPTS END-->
 
-    <% var navButtons = [ {"bstClass":"btn-success",text:"Add"}, {bstClass:"btn-primary",text:"Run"} ] %>
+    <% var navButtons = [] %>
     <% include navbar %>
-
+    
     <div class="container">
-      <div class="form-horizontal">
-        <div class="form-group">
-          <div class="col-sm-4">
-            <input type="text" placeholder="Longitude" class="form-control num-data-in">
-          </div>
-          <div class="col-sm-4">
-            <input type="text" placeholder="Lagtitude" class="form-control num-data-in">
-          </div>
-          <div class="col-sm-4">
-            <input type="text" placeholder="Volumn" class="form-control num-data-in">
+      <% if (solution) { %>
+      <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
+        <% solution.split('\n').filter(function(e){ return e.startsWith("Total ") }).forEach(function(e){ %>
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab" id="headingTwo">
+            <h4 class="panel-title"> <%=e%> </h4>
           </div>
         </div>
-        <div class="form-group">
-          <label for="numV" class="col-sm-2 control-label">Number Of Vehicle</label>
-          <div class="col-sm-4">
-            <input type="text" id="numV" value="10" class="form-control num-data-in">
+        <% }) %>
+
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab" id="headingOne">
+            <h4 class="panel-title">
+              <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                Click to expand for details<span class="caret"></span>
+              </a>
+            </h4>
           </div>
-          <label for="volperV" class="col-sm-2 control-label">Volume per Vehicle</label>
-          <div class="col-sm-4">
-            <input type="text" id="volperV" value="100" class="form-control num-data-in">
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel">
+            <div class="panel-body">
+              <pre> <%= solution %> </pre>
+            </div>
           </div>
         </div>
+
+      </div>
+      <% } else {%>
+      <div class = "progress">
+        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+        <span class="sr-only">100% Complete</span>
         </div>
-      <table class="table table-condensed">
-        <thead>
-          <th>#</th>
-          <th>Lng</th>
-          <th>Lag</th>
-          <th>Vol</th>
-        </thead>
-        <tbody>
-        </tbody>
-      </table>
-
-      <pre id="fileDisplay"></pre>
-            <label class='btn btn-default '> Import A File...<input type="file" id="inputFile" style='display:none'> </label>
-
-      <%include footer %>
-
+      </div>
+      <h2> It is still running now, will auto refresh in <span class="label label-default timer">60</span> seconds </h2>
+      <% }%>
+    
+    <% include footer %>
     </div>
 
   </body>
 </html>
 
 <script>
-$('.btn-success').click(function(evt){
-  evt.preventDefault();
-  var invalid = $('.num-data-in').map(function(idx,elem){
-    var v = $(elem).val();
-    return $.isNumeric(v) ? null : elem;
-  });
-
-  if(invalid.length > 0) {
-    alert('Some numeric field is invalid ! Please fix it first');
-    return;
-  }
-
-  addALocation($('.num-data-in:eq(0)').val(),$('.num-data-in:eq(1)').val(),$('.num-data-in:eq(2)').val());
-});
-
-var addALocation = function(lng, lag, vol) {
-  var newChild = `<tr onclick=onRemoveTR(this)><td>${$('.table-condensed tr').length}</td><td>${lng}</td><td>${lag}</td><td>${vol}</td></tr>`;
-  $('.table-condensed').append(newChild);
-}
-
-var onRemoveTR = function(obj) { $(obj).remove(); }
-
-$('.btn-primary').click(function(evt) {
-  evt.preventDefault();
-
-  if($('tbody tr').length <= 0) {
-    alert('No input to run!');
-    return;
-  }
-
-  var depot = null;
-  var demands = [];
-  $('tbody tr').each(function(idx,elem){
-    var d = {
-      lng: $(':eq(1)', elem).text() ,
-      lag: $(':eq(2)', elem).text() ,
-      vol: $(':eq(3)', elem).text() ,
+if($('.timer').length > 0) {
+  window.setInterval(function(){
+    var tic = $('.timer').text();
+    if(tic==0) {
+      location.reload();
+    } else {
+      $('.timer').text(tic-1);
     }
-    if(d.vol==0) depot = d;
-    demands.push(d);
-  });
-  if(depot==null) depot = demands[0];
-  depot.vol = 0;
-
-  $.ajax({
-    type: 'POST',
-    url: '/prob',
-    data: JSON.stringify({stat:"todo", depot: depot, demands: demands, numV: $('#numV').val(), volperV: $('#volperV').val()}),
-    dataType: 'json',
-    contentType: 'application/json'
-    }).done(function(){
-      var stay = confirm(`job ${data.id} submitted successfully. Want to stay and wait for result ?`);
-      if(stay) {
-        location.href = "/prob/view/" + data.id
-      } else {
-        location.reload();
-      }
-    }).fail(function(){alert('job submission fail')});
-});
-
-$('#inputFile').on('change',function(e){
-  var file = this.files[0];
-  var fileType = /text.*/;
-  if (file.type.match(fileType)) {
-    var reader = new FileReader();
-    reader.onload = function() { $('#fileDisplay').text(reader.result); tryParseProblem(reader.result); }
-    reader.readAsText(file);
-  } else {
-    $('#fileDisplay').text('File not support')
-  }
-});
-
-tryParseProblem = function(content) {
-  var lines = content.split('\n');
-  var demands = JSON.parse(lines[1]);
-  var locs = JSON.parse(lines[0]);
-  if(demands.length != locs.length) return false;
-  for(var i=0; i<demands.length; i++) {
-    addALocation(locs[i][0], locs[i][1], demands[i]);
-  }
-  return true;
+  }, 1000);
+} else {
+  console.log(solution)
 }
 </script>

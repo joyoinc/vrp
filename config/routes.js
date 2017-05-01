@@ -46,6 +46,7 @@ module.exports.routes = {
   '/freight/all' : 'FreightController.all',
 
   '/prob/pick' : 'ProbController.pickone',
+  '/prob/view/:id' : 'ProbController.peekat',
 
   '/': {
     view: 'homepage'

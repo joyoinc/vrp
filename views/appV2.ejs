@@ -101,27 +101,8 @@
     <script src="/js/bootstrap/bootstrap.js"></script>
     <!--SCRIPTS END-->
 
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Start to run a new VRP</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <form class="navbar-form navbar-right">
-            <div class="form-group">
-            <button  class="btn btn-success">Generate Grids</button>
-            <button  class="btn btn-primary">Run</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </nav>
+    <% var navButtons = [ {"bstClass":"btn-success",text:"generateGrids"}, {bstClass:"btn-primary",text:"Run"} ] %>
+    <% include navbar %>
 
     <div class="container">
       <div class="form-horizontal">
@@ -272,10 +253,17 @@ $('.btn-primary').click(function(evt) {
   $.ajax({
     type: 'POST',
     url: '/prob',
-    data: JSON.stringify({depot: depot, demands: demands, numV: $('#numV').val(), volperV: $('#volperV').val()}),
+    data: JSON.stringify({stat:"todo", depot: depot, demands: demands, numV: $('#numV').val(), volperV: $('#volperV').val()}),
     dataType: 'json',
     contentType: 'application/json'
-    }).done(function(){alert('job submission success');location.reload();}).fail(function(){alert('job submission fail')});
+    }).done(function(data){
+      var stay = confirm(`job ${data.id} submitted successfully. Want to stay and wait for result ?`);
+      if(stay) {
+        location.href = "/prob/view/" + data.id
+      } else {
+        location.reload();
+      }
+    }).fail(function(){alert('job submission fail')});
 });
 
 </script>
