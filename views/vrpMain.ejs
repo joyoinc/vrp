@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 
-    <title><%=typeof title == 'undefined' ? 'New Sails App' : title%></title>
+    <title>VRP Lab</title>
 
     <!-- Viewport mobile tag for sensible mobile support -->
     <!--
@@ -92,47 +92,12 @@
     <script src="/js/bootstrap/bootstrap.js"></script>
     <!--SCRIPTS END-->
 
-    <% var navTextboxes = []; var navButtons = []; %>
+    <% var navTextboxes = [{ph:"User Id",type:"text"},{ph:"User Secret",type:"password"}] %>
+    <% var navButtons = [{bstClass:"btn-primary",text:"Login"}] %>
     <% include navbar %>
     
     <div class="container">
-      <h2> Problem is created <span class="label label-default"><%=elaps%></span> seconds ago</h2>
-      <% if (solution) { %>
-      <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-
-        <% solution.split('\n').filter(function(e){ return e.startsWith("Total ") }).forEach(function(e){ %>
-        <div class="panel panel-default">
-          <div class="panel-heading" role="tab" id="headingTwo">
-            <h4 class="panel-title"> <%=e%> </h4>
-          </div>
-        </div>
-        <% }) %>
-
-        <div class="panel panel-default">
-          <div class="panel-heading" role="tab" id="headingOne">
-            <h4 class="panel-title">
-              <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                Click to expand for details<span class="caret"></span>
-              </a>
-            </h4>
-          </div>
-          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel">
-            <div class="panel-body">
-              <pre> <%= solution %> </pre>
-            </div>
-          </div>
-        </div>
-
-      </div>
-      <% } else {%>
-      <div class = "progress">
-        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-        <span class="sr-only">100% Complete</span>
-        </div>
-      </div>
-      <h2> It is still running now, will auto refresh in <span class="label label-default timer">60</span> seconds </h2>
-      <% }%>
-    
+          
     <% include footer %>
     </div>
 
@@ -140,16 +105,22 @@
 </html>
 
 <script>
-if($('.timer').length > 0) {
-  window.setInterval(function(){
-    var tic = $('.timer').text();
-    if(tic==0) {
-      location.reload();
-    } else {
-      $('.timer').text(tic-1);
-    }
-  }, 1000);
-} else {
-  console.log(solution)
-}
+$('.btn-primary').click(function(evt) {
+  evt.preventDefault();
+
+  $.ajax({
+    type: 'POST',
+    url: '/auth',
+    data: JSON.stringify({userId:$('.form-control:eq(0)').val(), userSecret: $('.form-control:eq(1)').val()}),
+    dataType: 'json',
+    contentType: 'application/json'
+    }).done(function(data){
+      if(data.isLoggedIn) {
+        location.href = "/app"
+      } else {
+        alert('Login Failed!')
+        $('.form-control').val('')
+      }
+    }).fail(function(data){alert(data)});
+});
 </script>

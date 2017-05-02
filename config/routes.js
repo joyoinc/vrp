@@ -34,7 +34,6 @@ module.exports.routes = {
 
   '/map' : { view: 'map' },
   '/appBeta' : { view: 'appPortal' },
-  '/app' : { view: 'appV2' },
 
   '/chart/bar' : { view: 'chart-bar' },
   '/chart/pie' : { view: 'chart-pie' },
@@ -44,13 +43,14 @@ module.exports.routes = {
   '/freight/unassigned' : 'FreightController.unassigned',
   '/freight/recent/:totalSecs/:count' : 'FreightController.recent',
   '/freight/all' : 'FreightController.all',
+  
+  '/auth' : 'AuthController.local',
 
-  '/prob/pick' : 'ProbController.pickone',
-  '/prob/view/:id' : 'ProbController.peekat',
+  '/prob/pick' : 'ProbController.pickOne',
+  '/prob/view/:id' : 'ProbController.peekAt',
+  '/app' : 'ProbController.genRandom',
 
-  '/': {
-    view: 'homepage'
-  }
+  '/': { view: 'vrpMain' }
 
   /***************************************************************************
   *                                                                          *

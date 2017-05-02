@@ -101,7 +101,7 @@
     <script src="/js/bootstrap/bootstrap.js"></script>
     <!--SCRIPTS END-->
 
-    <% var navButtons = [ {"bstClass":"btn-success",text:"generateGrids"}, {bstClass:"btn-primary",text:"Run"} ] %>
+    <% var navTextboxes = []; var navButtons = [ {"bstClass":"btn-success",text:"生成"}, {bstClass:"btn-primary",text:"运行"} ] %>
     <% include navbar %>
 
     <div class="container">
@@ -109,11 +109,11 @@
         <div class="form-group">
           <label for="numV" class="col-sm-2 control-label">车辆总数</label>
           <div class="col-sm-4">
-            <input type="text" id="numV" value="10" class="form-control num-data-in">
+            <input type="text" id="numV" value="15" class="form-control num-data-in">
           </div>
           <label for="volperV" class="col-sm-2 control-label">每辆车容积</label>
           <div class="col-sm-4">
-            <input type="text" id="volperV" value="100" class="form-control num-data-in">
+            <input type="text" id="volperV" value="1000" class="form-control num-data-in">
           </div>
         </div>
         <div class="form-group">
@@ -135,7 +135,7 @@
         <div class="form-group">
           <label class="col-sm-2 control-label">取货点总数</label>
           <div class="col-sm-1">
-            <input type="text" id="gridNum" value="20" class="form-control num-data-in">
+            <input type="text" id="gridNum" value="30" class="form-control num-data-in">
           </div>
           <label class="col-sm-2 control-label">间距（单位：百米）</label>
           <div class="col-sm-1">
@@ -143,7 +143,7 @@
           </div>
           <label class="col-sm-2 control-label">货物总量</label>
           <div class="col-sm-1">
-            <input type="text" id="ttlVol" value="10000" class="form-control num-data-in">
+            <input type="text" id="ttlVol" value="12500" class="form-control num-data-in">
           </div>
           <label class="col-sm-1 control-label">偏差</label>
           <div class="col-sm-2">
@@ -223,12 +223,14 @@ var addALocation = function(lng, lag, vol) {
 }
 
 var onEditTR = function(obj) { 
+  /*
     if($("input", obj).length > 0) return;
     
     $(":gt(0)", obj).each(function(idx, elem){
         var value = $(elem).text();
         $(elem).empty().append(`<input type=text value=${value}>`);
     })
+  */
 }
 
 $('.btn-primary').click(function(evt) {
