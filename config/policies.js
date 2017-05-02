@@ -26,7 +26,7 @@ module.exports.policies = {
   *                                                                          *
   ***************************************************************************/
 
-  '*': 'sessionAuth',
+  '*': 'isLoggedIn',
 
   /***************************************************************************
   *                                                                          *
@@ -35,7 +35,11 @@ module.exports.policies = {
   *                                                                          *
   ***************************************************************************/
 
-  'ProbController': ['isLoggedIn']
+  'ProbController': {
+      
+      'pickOne' : 'basicAuth'
+      
+  }
 	// RabbitController: {
 
 		// Apply the `false` policy as the default for all of RabbitController's actions

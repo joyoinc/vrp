@@ -21,7 +21,7 @@ module.exports = {
         return res.json({isLoggedIn: false})
       }
 
-      req.session.authenticated = true
+      req.session.me = id
       res.json({id: id, isLoggedIn: true})
     });
 
