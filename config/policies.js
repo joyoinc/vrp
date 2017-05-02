@@ -42,7 +42,7 @@ module.exports.policies = {
 
   'ProbController': {
       
-      'pickOne' : 'basicAuth'
+      '*' : 'basicAuth'
       
   }
 	// RabbitController: {
