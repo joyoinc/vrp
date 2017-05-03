@@ -46,7 +46,8 @@ module.exports.routes = {
   
   '/auth' : 'AuthController.local',
 
-  '/prob/pick' : 'ProbController.pickOne',
+  '/prob/bot/pick' : 'ProbController.pickOne',
+  'PUT /prob/bot/:id' : 'ProbController.doneOne',
   '/prob/view/:id' : 'ProbController.peekAt',
   '/app' : 'ProbController.genRandom',
 

@@ -22,6 +22,16 @@ module.exports = {
     });
   },
 
+  doneOne: function(req,res) {
+    Prob.update({id: req.param('id')}, {stat:"done", solution:req.param('solution')}).exec(function(err, d){
+      if(err) {
+        console.log(err);
+        return;
+      }
+      return res.json(d);
+    });
+  },
+
   pickOne: function(req,res) {
     Prob.find({ where: {stat:"todo"}, limit: 1}).exec(function(err, d){
       if(err) {
