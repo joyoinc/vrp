@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 
-    <title><%=typeof title == 'undefined' ? 'New Sails App' : title%></title>
+    <title><%=typeof title == 'undefined' ? 'VRP Lab ' : title%></title>
 
     <!-- Viewport mobile tag for sensible mobile support -->
     <!--
@@ -101,7 +101,9 @@
     <script src="/js/bootstrap/bootstrap.js"></script>
     <!--SCRIPTS END-->
 
-    <% var navTextboxes = []; var navButtons = [ {"bstClass":"btn-success",text:"生成"}, {bstClass:"btn-primary",text:"运行"} ] %>
+    <% var navLinks = [ {"text":"Home", "url":"/"}, {"text":"My Profile", "url":"/changePass"}]; %>
+    <% var navTextboxes = []; %>
+    <% var navButtons = [ {"bstClass":"btn-success",text:"生成"}, {bstClass:"btn-primary",text:"运行"} ] %>
     <% include navbar %>
 
     <div class="container">

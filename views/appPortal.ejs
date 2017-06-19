@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 
-    <title><%=typeof title == 'undefined' ? 'New Sails App' : title%></title>
+    <title><%=typeof title == 'undefined' ? 'VRP Lab ' : title%></title>
 
     <!-- Viewport mobile tag for sensible mobile support -->
     <!--
@@ -93,6 +93,8 @@
     <!--SCRIPTS END-->
 
     <% var navButtons = [ {"bstClass":"btn-success",text:"Add"}, {bstClass:"btn-primary",text:"Run"} ] %>
+    <% var navLinks = []; %>
+    <% var navTextboxes = []; %>
     <% include navbar %>
 
     <div class="container">

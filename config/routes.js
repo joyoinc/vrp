@@ -34,6 +34,7 @@ module.exports.routes = {
 
   '/map' : { view: 'map' },
   '/appBeta' : { view: 'appPortal' },
+  '/changePass' : { view: 'change-passwd' },
 
   '/chart/bar' : { view: 'chart-bar' },
   '/chart/pie' : { view: 'chart-pie' },
@@ -45,6 +46,7 @@ module.exports.routes = {
   '/freight/all' : 'FreightController.all',
   
   '/auth' : 'AuthController.local',
+  '/auth/chg' : 'AuthController.changePassword',
 
   '/prob/bot/pick' : 'ProbController.pickOne',
   'PUT /prob/bot/:id' : 'ProbController.doneOne',

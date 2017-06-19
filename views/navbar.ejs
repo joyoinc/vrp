@@ -8,6 +8,9 @@
             <span class="icon-bar"></span>
           </button>
           <a class="navbar-brand" href="/app">VRP Lab</a>
+          <% navLinks.forEach(function(l) { %>
+            <a class="navbar-brand" href="<%=l.url%>"><%=l.text%></a>
+          <% }) %>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <form class="navbar-form navbar-right">
