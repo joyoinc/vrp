@@ -36,7 +36,6 @@ module.exports = {
     var md5 = require("../helpers/md5")
 
     var id = req.session.me
-    console.log('id is ' + id)
     var crypt = md5(req.param('newSecret')).toUpperCase()
 
     Auth.update({cid:id},{token:crypt}).exec(function(err, d){

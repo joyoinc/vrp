@@ -10,6 +10,16 @@ module.exports = {
     res.view("appV2")
   },
 
+  getRange: function(req, res) {
+    Prob.find({createdAt: {'>=': req.param('from'), '<=': req.param('to')} , sort: 'createdAt desc'}).exec(function(err, d){
+      if(err) {
+        console.log(err);
+        return;
+      }
+      return res.json(d)
+    });
+  },
+
   peekAt: function(req, res){
     Prob.find({id: req.param('id')}).exec(function(err, d){
       if(err) {

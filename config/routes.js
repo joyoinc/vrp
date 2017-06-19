@@ -35,6 +35,7 @@ module.exports.routes = {
   '/map' : { view: 'map' },
   '/appBeta' : { view: 'appPortal' },
   '/changePass' : { view: 'change-passwd' },
+  '/probHistory' : { view: 'prob-list' },
 
   '/chart/bar' : { view: 'chart-bar' },
   '/chart/pie' : { view: 'chart-pie' },
@@ -51,6 +52,7 @@ module.exports.routes = {
   '/prob/bot/pick' : 'ProbController.pickOne',
   'PUT /prob/bot/:id' : 'ProbController.doneOne',
   '/prob/view/:id' : 'ProbController.peekAt',
+  '/prob/getRange' : 'ProbController.getRange',
   '/app' : 'ProbController.genRandom',
 
   '/': { view: 'vrpMain' }
