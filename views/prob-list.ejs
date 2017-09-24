@@ -141,6 +141,7 @@ $('.btn-primary').click(function(evt) {
     contentType: 'application/json'
     }).done(function(data){
       console.log(data)
+      $("ul").html("");
       data.forEach(function(d){
         var str = `<li class='list-group-item'>Problem <a href='/prob/view/${d.id}'>${d.id}</a>. created at ${d.createdAt} </li>`
         $("ul").append(str)

@@ -20,6 +20,10 @@ module.exports = {
     });
   },
 
+  viewPath: function(req, res) {
+    res.render("map-2", {problemId: req.param('id')});
+  },
+
   peekAt: function(req, res){
     Prob.find({id: req.param('id')}).exec(function(err, d){
       if(err) {
@@ -28,7 +32,7 @@ module.exports = {
       }
       var a = new Date(d[0].createdAt)
       var b = new Date()
-      res.view("probDetail", { solution: d[0].solution, elaps: (b-a)/1000 } )
+      res.view("probDetail", { solution: d[0].solution, elaps: (b-a)/1000, id: d[0].id } )
     });
   },
 

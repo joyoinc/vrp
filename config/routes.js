@@ -33,6 +33,7 @@ module.exports.routes = {
   ***************************************************************************/
 
   '/map' : { view: 'map' },
+  '/map2/:id' : 'ProbController.viewPath',
   '/appBeta' : { view: 'appPortal' },
   '/changePass' : { view: 'change-passwd' },
   '/probHistory' : { view: 'prob-list' },
